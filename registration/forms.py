@@ -25,7 +25,7 @@ class RegistrationForm(forms.Form):
     """
     Form for registering a new user account.
     
-    Validates that the requested username is not already in use, and
+    Validates that the requested email is not already in use, and
     requires the password to be entered twice to catch typos.
     
     Subclasses should feel free to add any additional validation they
@@ -34,30 +34,28 @@ class RegistrationForm(forms.Form):
     registration backend.
     
     """
-    username = forms.RegexField(regex=r'^[\w.@+-]+$',
-                                max_length=30,
-                                widget=forms.TextInput(attrs=attrs_dict),
-                                label=_("Username"),
-                                error_messages={'invalid': _("This value may contain only letters, numbers and @/./+/-/_ characters.")})
+    
     email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict,
                                                                maxlength=75)),
                              label=_("E-mail"))
+    first_name = forms.CharField(label=_('First Name'))
+    last_name = forms.CharField(label=_('First Name'))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False),
                                 label=_("Password"))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False),
                                 label=_("Password (again)"))
     
-    def clean_username(self):
+    def clean_email(self):
         """
-        Validate that the username is alphanumeric and is not already
+        Validate that the email is alphanumeric and is not already
         in use.
         
         """
-        existing = User.objects.filter(username__iexact=self.cleaned_data['username'])
+        existing = User.objects.filter(email__iexact=self.cleaned_data['email'])
         if existing.exists():
-            raise forms.ValidationError(_("A user with that username already exists."))
+            raise forms.ValidationError(_("A user with that email already exists."))
         else:
-            return self.cleaned_data['username']
+            return self.cleaned_data['email']
 
     def clean(self):
         """
