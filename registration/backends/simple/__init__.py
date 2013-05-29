@@ -20,12 +20,12 @@ class SimpleBackend(object):
         Create and immediately log in a new user.
         
         """
-        username, email, password = kwargs['username'], kwargs['email'], kwargs['password1']
-        User.objects.create_user(username, email, password)
+        email, first_name, last_name password = kwargs['email'], kwargs['first_name'], kwargs['last_name'], kwargs['password1']
+        User.objects.create_user(email, first_name=first_name, last_name=last_name, password=password)
         
         # authenticate() always has to be called before login(), and
         # will return the user we just created.
-        new_user = authenticate(username=username, password=password)
+        new_user = authenticate(email=email, password=password)
         login(request, new_user)
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
