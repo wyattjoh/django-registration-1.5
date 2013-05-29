@@ -39,7 +39,7 @@ class RegistrationForm(forms.Form):
                                                                maxlength=75)),
                              label=_("E-mail"))
     first_name = forms.CharField(label=_('First Name'))
-    last_name = forms.CharField(label=_('First Name'))
+    last_name = forms.CharField(label=_('Last Name'))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False),
                                 label=_("Password"))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict, render_value=False),
